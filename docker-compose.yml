@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  mysql:
+    image: chatopera/mysql:5.7
+    restart: always
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./cosinee-MySQL-slim.sql:/docker-entrypoint-initdb.d/cosinee-MySQL-slim.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+
+  redis:
+    restart: always
+    image: redis:5
+    ports:
+      - '6379:6379'
+
+  activemq:
+    image: chatopera/activemq:5.14.3
+    restart: always
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=123456
+      - ACTIVEMQ_ENABLED_SCHEDULER=true
+      - ACTIVEMQ_MIN_MEMORY=1024
+      - ACTIVEMQ_MAX_MEMORY=4096
+    ports:
+      - '8161:8161'
+      - '1616:61616'
+      - '1613:61613'
+
+  elasticsearch:
+    image: elasticsearch:2.4.6
+    restart: always
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
